@@ -81,16 +81,16 @@ An intelligent web application that:
 
 ## 🎥 Demo
 
-### **Screenshots**
+### **Live Shots**
 
 #### Price Prediction Interface
-![Price Prediction](screenshots/price_prediction.png)
+![Price Prediction](screenshots/Price_prediction.mp4)
 
 #### Market Analysis Dashboard
-![Market Analysis](screenshots/market_analysis.png)
+![Market Analysis](screenshots/Market_analysis.mp4g)
 
 #### Trend Visualization
-![Trends](screenshots/trends.png)
+![Trends](screenshots/Trend_and_insights.mp4)
 
 ### **Live Demo**
 🔗 [Try the Live Application](your-deployment-link)
