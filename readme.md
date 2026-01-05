@@ -86,8 +86,12 @@ An intelligent web application that:
 #### Price Prediction Interface
 ![Price Prediction](samples/Price_prediction.gif)
 
+---
+
 #### Market Analysis Dashboard
 ![Market Analysis](samples/Market_analysis.gif)
+
+---
 
 #### Trend Visualization
 ![Trends](samples/Trend_and_insights.gif)
