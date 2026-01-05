@@ -406,9 +406,9 @@ agricultural-price-prediction/
 
 ## 🙏 Acknowledgments
 
-- **Data Source**: Government of India - Agricultural Marketing Information Network (AGMARKNET)
+- **Data Source**: Kaggle - https://www.kaggle.com/datasets/khandelwalmanas/daily-commodity-prices-india/data
 - **Inspiration**: Empowering Indian farmers with technology
-- **Libraries**: XGBoost, Streamlit, Plotly, Scikit-learn teams
+- **Libraries**: XGBoost, Streamlit, Plotly, Scikit-learn
 - **Community**: Stack Overflow, GitHub, Kaggle contributors
 
 ---
