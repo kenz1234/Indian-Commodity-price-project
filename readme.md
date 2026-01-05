@@ -84,13 +84,13 @@ An intelligent web application that:
 ### **Live Shots**
 
 #### Price Prediction Interface
-![Price Prediction](screenshots/Price_prediction.mp4)
+![Price Prediction](samples/Price_prediction.gif)
 
 #### Market Analysis Dashboard
-![Market Analysis](screenshots/Market_analysis.mp4g)
+![Market Analysis](samples/Market_analysis.gif)
 
 #### Trend Visualization
-![Trends](screenshots/Trend_and_insights.mp4)
+![Trends](samples/Trend_and_insights.gif)
 
 
 ---
