@@ -6,7 +6,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime, timedelta
 
-# Page configuration
+
 st.set_page_config(
     page_title="Agricultural Price Predictor",
     page_icon="🌾",
@@ -14,7 +14,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS
+
 st.markdown("""
     <style>
     .main-header {
@@ -59,7 +59,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# Load models and encoders
+
 @st.cache_resource
 def load_models():
     try:
@@ -73,7 +73,6 @@ def load_models():
         return None, None
 
 
-# Load mapping files
 @st.cache_data
 def load_mapping_files():
     try:
@@ -84,8 +83,6 @@ def load_mapping_files():
         st.warning("⚠️ Mapping files not found. Using manual entry mode.")
         return None, None
 
-
-# Load historical data for analysis
 @st.cache_data
 def load_historical_data():
     try:
@@ -100,10 +97,10 @@ model, encoders = load_models()
 state_district_market, commodity_variety_grade = load_mapping_files()
 historical_data = load_historical_data()
 
-# Header
+
 st.markdown('<div class="main-header">🌾 Agricultural Price Prediction System 🌾</div>', unsafe_allow_html=True)
 
-# Sidebar
+
 with st.sidebar:
     st.image("https://cdn-icons-png.flaticon.com/512/2917/2917995.png", width=100)
     st.title("Navigation")
@@ -114,7 +111,7 @@ with st.sidebar:
     st.info(
         "This system helps farmers predict agricultural commodity prices and analyze market trends across different regions.")
 
-# Page 1: Price Prediction
+
 if page == "🔮 Price Prediction":
     st.header("🔮 Predict Commodity Prices")
 
@@ -123,7 +120,7 @@ if page == "🔮 Price Prediction":
     with col1:
         st.subheader("Enter Details")
 
-        # Location Selection
+       
         st.markdown("#### 📍 Location Details")
         loc_col1, loc_col2, loc_col3 = st.columns(3)
 
@@ -153,7 +150,7 @@ if page == "🔮 Price Prediction":
             else:
                 market = st.text_input("Market")
 
-        # Commodity Selection
+       
         st.markdown("#### 🌾 Commodity Details")
         comm_col1, comm_col2, comm_col3 = st.columns(3)
 
@@ -171,7 +168,7 @@ if page == "🔮 Price Prediction":
         with comm_col2:
             if commodity_variety_grade is not None and varieties:
                 variety = st.selectbox("Variety", varieties)
-                # Get commodity code if available
+              
                 commodity_code_row = commodity_variety_grade[
                     (commodity_variety_grade['Commodity'] == commodity) &
                     (commodity_variety_grade['Variety'] == variety)
@@ -196,7 +193,7 @@ if page == "🔮 Price Prediction":
             else:
                 grade = st.text_input("Grade")
 
-        # Price range inputs
+        
         st.markdown("#### 💰 Expected Price Range (Optional)")
         price_col1, price_col2 = st.columns(2)
 
@@ -218,7 +215,7 @@ if page == "🔮 Price Prediction":
                 help="Expected maximum price in the market"
             )
 
-        # Date Selection
+     
         st.markdown("#### 📅 Prediction Date")
         prediction_date = st.date_input(
             "Select Date",
@@ -243,16 +240,14 @@ if page == "🔮 Price Prediction":
         </div>
         """, unsafe_allow_html=True)
 
-    # Prediction
+
     if predict_button and model is not None and encoders is not None:
         try:
-            # Extract date features
             year = prediction_date.year
             month = prediction_date.month
             day = prediction_date.day
             weekofyear = prediction_date.isocalendar()[1]
 
-            # Get historical averages if data is available for better estimates
             if historical_data is not None and min_price == 1000.0 and max_price == 5000.0:
                 hist_filtered = historical_data[
                     (historical_data['State'] == state) &
@@ -262,7 +257,6 @@ if page == "🔮 Price Prediction":
                     min_price = hist_filtered['Min_Price'].mean() if 'Min_Price' in hist_filtered.columns else min_price
                     max_price = hist_filtered['Max_Price'].mean() if 'Max_Price' in hist_filtered.columns else max_price
 
-            # Encode categorical variables
             input_data = {
                 'State': encoders['State'].transform([state])[0],
                 'District': encoders['District'].transform([district])[0],
@@ -279,17 +273,13 @@ if page == "🔮 Price Prediction":
                 'weekofyear': weekofyear
             }
 
-            # Create DataFrame with correct column order
             input_df = pd.DataFrame([input_data])
-            # Reorder columns to match training data
             column_order = ['State', 'District', 'Market', 'Commodity', 'Variety', 'Grade',
                             'Min_Price', 'Max_Price', 'Commodity_Code', 'year', 'month', 'day', 'weekofyear']
             input_df = input_df[column_order]
-
-            # Predict
             prediction = model.predict(input_df)[0]
 
-            # Display prediction
+            
             st.markdown("---")
             st.markdown(f"""
             <div class="prediction-box">
@@ -299,7 +289,7 @@ if page == "🔮 Price Prediction":
             </div>
             """, unsafe_allow_html=True)
 
-            # Additional insights
+            
             st.markdown("### 📊 Price Insights")
             col1, col2, col3, col4 = st.columns(4)
 
@@ -313,7 +303,7 @@ if page == "🔮 Price Prediction":
                 margin = ((prediction - min_price) / min_price * 100) if min_price > 0 else 0
                 st.metric("Potential Margin", f"{margin:.1f}%")
 
-            # Historical comparison if data available
+        
             if historical_data is not None:
                 hist_filtered = historical_data[
                     (historical_data['State'] == state) &
@@ -323,7 +313,6 @@ if page == "🔮 Price Prediction":
                     avg_price = hist_filtered['Modal_Price'].mean()
                     price_diff = prediction - avg_price
                     price_diff_pct = (price_diff / avg_price) * 100
-
                     st.markdown("### 📈 Comparison with Historical Average")
                     if price_diff > 0:
                         st.success(
@@ -336,12 +325,9 @@ if page == "🔮 Price Prediction":
             st.error(f"❌ Prediction failed: {str(e)}")
             st.info("Please ensure all fields are filled correctly and the values exist in the training data.")
 
-# Page 2: Market Analysis
 elif page == "📊 Market Analysis":
     st.header("📊 Market Analysis Dashboard")
-
     if historical_data is not None:
-        # Filters
         st.subheader("🔍 Apply Filters")
         col1, col2, col3 = st.columns(3)
 
@@ -368,7 +354,7 @@ elif page == "📊 Market Analysis":
                  int(historical_data['Arrival_Date'].dt.year.max()))
             )
 
-        # Filter data
+    
         filtered_data = historical_data[
             (historical_data['State'].isin(selected_states)) &
             (historical_data['Commodity'].isin(selected_commodities)) &
@@ -377,7 +363,6 @@ elif page == "📊 Market Analysis":
             ]
 
         if not filtered_data.empty:
-            # State-wise analysis
             st.markdown("---")
             st.subheader("🗺️ State-wise Price Analysis")
 
@@ -398,8 +383,6 @@ elif page == "📊 Market Analysis":
                 height=400
             )
             st.plotly_chart(fig_state, use_container_width=True)
-
-            # District-wise analysis
             st.markdown("---")
             st.subheader("🏘️ District-wise Price Analysis")
 
@@ -417,8 +400,6 @@ elif page == "📊 Market Analysis":
             )
             fig_district.update_layout(height=500)
             st.plotly_chart(fig_district, use_container_width=True)
-
-            # Commodity comparison
             st.markdown("---")
             st.subheader("🌾 Commodity Price Comparison")
 
@@ -441,7 +422,6 @@ elif page == "📊 Market Analysis":
             )
             st.plotly_chart(fig_commodity, use_container_width=True)
 
-            # Summary statistics
             st.markdown("---")
             st.subheader("📈 Summary Statistics")
 
@@ -461,30 +441,27 @@ elif page == "📊 Market Analysis":
     else:
         st.error("❌ Historical data not found. Please ensure 'combined.csv' is available.")
 
-# Page 3: Trends & Insights
+
 elif page == "📈 Trends & Insights":
     st.header("📈 Price Trends & Market Insights")
 
     if historical_data is not None:
-        # Commodity selection for trend
         selected_commodity = st.selectbox(
             "Select Commodity for Trend Analysis",
             sorted(historical_data['Commodity'].unique())
         )
-
         selected_state = st.selectbox(
             "Select State",
             sorted(historical_data['State'].unique())
         )
 
-        # Filter data
+
         trend_data = historical_data[
             (historical_data['Commodity'] == selected_commodity) &
             (historical_data['State'] == selected_state)
             ].copy()
 
         if not trend_data.empty:
-            # Monthly trend
             st.markdown("---")
             st.subheader(f"📊 Monthly Price Trend - {selected_commodity} in {selected_state}")
 
@@ -508,8 +485,6 @@ elif page == "📈 Trends & Insights":
                 hovermode='x unified'
             )
             st.plotly_chart(fig_trend, use_container_width=True)
-
-            # Seasonal analysis
             st.markdown("---")
             st.subheader("🌦️ Seasonal Price Pattern")
 
@@ -533,8 +508,6 @@ elif page == "📈 Trends & Insights":
                 height=400
             )
             st.plotly_chart(fig_seasonal, use_container_width=True)
-
-            # Price distribution
             st.markdown("---")
             st.subheader("📊 Price Distribution")
 
@@ -561,7 +534,7 @@ elif page == "📈 Trends & Insights":
                 fig_box.update_traces(marker_color='#00BCD4')
                 st.plotly_chart(fig_box, use_container_width=True)
 
-            # Key insights
+      
             st.markdown("---")
             st.subheader("💡 Key Insights")
 
@@ -587,7 +560,7 @@ elif page == "📈 Trends & Insights":
     else:
         st.error("❌ Historical data not found. Please ensure 'combined.csv' is available.")
 
-# Footer
+
 st.markdown("---")
 st.markdown("""
 <div style="text-align: center; color: #666; padding: 1rem;">
