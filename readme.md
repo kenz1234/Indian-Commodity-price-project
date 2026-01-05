@@ -403,35 +403,6 @@ agricultural-price-prediction/
 
 ---
 
-## 🤝 Contributing
-
-We welcome contributions from the community! Here's how you can help:
-
-### **Ways to Contribute**
-1. 🐛 **Report Bugs**: Open an issue with detailed reproduction steps
-2. 💡 **Suggest Features**: Share your ideas for improvements
-3. 📝 **Improve Documentation**: Fix typos, add examples
-4. 🔧 **Submit Pull Requests**: Add features or fix bugs
-
-### **Contribution Guidelines**
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-### **Code Standards**
-- Follow PEP 8 style guide for Python
-- Write descriptive commit messages
-- Add comments for complex logic
-- Update documentation for new features
-- Write tests for new functionality
-
----
-
-## 📄 License
-
-
 
 ## 🙏 Acknowledgments
 
