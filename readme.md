@@ -92,8 +92,6 @@ An intelligent web application that:
 #### Trend Visualization
 ![Trends](screenshots/Trend_and_insights.mp4)
 
-### **Live Demo**
-🔗 [Try the Live Application](your-deployment-link)
 
 ---
 
